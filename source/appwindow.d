@@ -1,12 +1,18 @@
 module appwindow;
 
-import std.experimental.logger;
+import std.experimental.logger,
+  std.path;
 
 import gtk.ApplicationWindow,
   gtk.Builder,
   gtk.HeaderBar,
   gtk.Label,
-  gtk.ScrolledWindow;
+  gtk.ScrolledWindow,
+  gtk.Box;
+
+import constants;
+
+string pkgdatadir = DATADIR;
 
 class AppWindow: gtk.ApplicationWindow.ApplicationWindow
 {
@@ -18,13 +24,13 @@ public:
         super(application);
 
         Builder builder = new Builder();
-        if(!builder.addFromResource("/org/example/gtkdapp/ui/MainWindow.ui"))
+        if(!builder.addFromFile(buildPath(pkgdatadir,"ui/MainWindow.ui")))
         {
-            critical("Window resource cannot be found");
+            critical("Window ui-file cannot be found");
             return;
         }
         HeaderBar headerBar = cast(HeaderBar) builder.getObject("headerBar");
-        ScrolledWindow windowContent = cast(ScrolledWindow) builder.getObject("windowContent");
+        Box windowContent = cast(Box) builder.getObject("windowContent");
         this.setTitlebar(headerBar);
         this.add(windowContent);
     }
