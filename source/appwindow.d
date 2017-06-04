@@ -2,10 +2,11 @@ module appwindow;
 
 import std.experimental.logger;
 
-import gtk.ApplicationWindow;
-import gtk.Builder;
-import gtk.HeaderBar;
-import gtk.Label;
+import gtk.ApplicationWindow,
+  gtk.Builder,
+  gtk.HeaderBar,
+  gtk.Label,
+  gtk.ScrolledWindow;
 
 class AppWindow: gtk.ApplicationWindow.ApplicationWindow
 {
@@ -22,8 +23,8 @@ public:
             critical("Window resource cannot be found");
             return;
         }
-        HeaderBar headerBar = cast(HeaderBar)builder.getObject("headerBar");
-        Label windowContent = cast(Label)builder.getObject("windowContent");
+        HeaderBar headerBar = cast(HeaderBar) builder.getObject("headerBar");
+        ScrolledWindow windowContent = cast(ScrolledWindow) builder.getObject("windowContent");
         this.setTitlebar(headerBar);
         this.add(windowContent);
     }
