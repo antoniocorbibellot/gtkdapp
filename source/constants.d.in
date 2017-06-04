@@ -1,0 +1,5 @@
+
+module constants;
+
+public immutable UIDIR = "topdir/data/ui/";
+public immutable DATADIR = "topdir/data/";
