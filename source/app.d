@@ -28,6 +28,11 @@ private:
     void onAppActivate(GApplication app)
     {
         trace("Activate App Signal");
+        if (app.getIsRegistered())
+          trace("App is registered");
+        else
+          trace("App is NOT registered");
+
         if (!app.getIsRemote())
         {
             this.window = new AppWindow(this);
