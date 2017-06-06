@@ -8,7 +8,9 @@ import gtk.ApplicationWindow,
   gtk.HeaderBar,
   gtk.Label,
   gtk.ScrolledWindow,
-  gtk.Box;
+  gtk.Box,
+  gtk.ImageMenuItem,
+  gtk.Main;
 
 import constants;
 
@@ -33,5 +35,7 @@ public:
         Box windowContent = cast(Box) builder.getObject("windowContent");
         this.setTitlebar(headerBar);
         this.add(windowContent);
+
+        (cast(ImageMenuItem) builder.getObject("mQuit")).addOnActivate ((mi) {close;});
     }
 }
