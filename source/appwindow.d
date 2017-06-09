@@ -37,7 +37,6 @@ public:
   this(gtk.Application.Application application)
   {
     super(application);
-    theApp = application;
 
     Builder builder = new Builder();
     if(!builder.addFromFile(buildPath(pkgdatadir,"ui/MainWindow.ui")))
@@ -50,14 +49,14 @@ public:
     this.setTitlebar(headerBar);
     this.add(windowContent);
 
-    createActions (application);
+    createActionsFor (application);
     connectMenuActions (builder);
     //(cast(ImageMenuItem) builder.getObject("mQuit")).addOnActivate ((mi) {close;});
   }
 
-  private void createActions (gtk.Application.Application application) {
+  private void createActionsFor (gtk.Application.Application application) {
     SimpleAction saNormal = new SimpleAction("quit", null);
-    saNormal.addOnActivate(delegate(Variant, SimpleAction) { std.stdio.writefln ("in action-quit."); close; });
+    saNormal.addOnActivate( (V,S) { std.stdio.writefln ("in app's-%s-action.", S.getName); close; });
     application.addAction (saNormal);
   }
   
@@ -122,6 +121,4 @@ public:
       }
 
   }
-private:
-  gtk.Application.Application theApp;
 }
