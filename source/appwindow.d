@@ -50,7 +50,7 @@ public:
     this.add(windowContent);
 
     createActionsFor (application);
-    connectMenuActions (builder);
+    //connectMenuActions (builder);
     //(cast(ImageMenuItem) builder.getObject("mQuit")).addOnActivate ((mi) {close;});
   }
 
@@ -60,19 +60,6 @@ public:
     application.addAction (saNormal);
   }
   
-  private void connectMenuActions (Builder b) {
-    ImageMenuItem imi;
-
-    // Quit
-    imi = cast(ImageMenuItem) b.getObject("mQuit");
-    //imi.setActionName("app.quit");
-
-    //std.stdio.writefln ("in Connect, Action: [%s]" , imi.getActionName);
-
-    //imi.setSensitive (true);
-    //imi.addOnActivate(&onMenuActivate);
-  }
-
   private void onMenuActivate(MenuItem menuItem)
   {
     class GtkDAbout : AboutDialog {
