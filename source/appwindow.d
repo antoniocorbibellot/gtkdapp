@@ -55,13 +55,17 @@ public:
   }
 
   private void createActionsFor (gtk.Application.Application application) {
-    SimpleAction saNormal = new SimpleAction("quit", null);
-    saNormal.addOnActivate( (V,S) { std.stdio.writefln ("in app's-%s-action.", S.getName); close; });
-    application.addAction (saNormal);
+    foreach (a; ["quit", "about"]) {
+       SimpleAction sa = new SimpleAction(a, null);
+       sa.addOnActivate( (V, sa) { std.stdio.writefln ("in app's-%s-action.", sa.getName); onMenuSelection (sa); });
+       application.addAction (sa);
+    }
   }
   
-  private void onMenuActivate(MenuItem menuItem)
+  private void onMenuSelection (SimpleAction sa)
   {
+    AppWindow aw = this;
+    
     class GtkDAbout : AboutDialog {
 		this() {
 			string[] names;
@@ -73,6 +77,7 @@ public:
 			setArtists( names );
 			setLicense("License is LGPL");
 			setWebsite("http://www.dlsi.ua.es");
+            setTransientFor (aw);
 		}
 	}
 
@@ -81,18 +86,18 @@ public:
 			dlg.destroy();
 	}
     
-    string action = menuItem.getActionName();
+    string action = sa.getName;
 
     std.stdio.writefln ("in CB, Action: [%s]", action);
     
     switch (action)
       {
-      case "help.about":
+      case "about":
         GtkDAbout dlg = new GtkDAbout();
         dlg.addOnResponse(&onDialogResponse);
         dlg.showAll();
         break;
-      case "app.quit":
+      case "quit":
         close;
         break;
       default:
@@ -106,6 +111,5 @@ public:
         d.destroy();
         break;
       }
-
   }
 }
