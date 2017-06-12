@@ -67,23 +67,28 @@ public:
     AppWindow aw = this;
     
     class GtkDAbout : AboutDialog {
-		this() {
-			string[] names;
-			names ~= "Antonio Corbi (binding/wrapping/proxying/decorating for D)";
-			names ~= "www.gtk.org (base C library)";
+      this() {
+        string[] names;
+        names ~= "Antonio Corbi (binding/wrapping/proxying/decorating for D)";
+        names ~= "www.gtk.org (base C library)";
 
-			setAuthors( names );
-			setDocumenters( names );
-			setArtists( names );
-			setLicense("License is LGPL");
-			setWebsite("http://www.dlsi.ua.es");
-            setTransientFor (aw);
-		}
+        setAuthors( names );
+        setDocumenters( names );
+        setArtists( names );
+        setLicense("License is LGPL");
+        setWebsite("http://www.dlsi.ua.es");
+        setTransientFor (aw);
+      }
 	}
 
     void onDialogResponse(int response, Dialog dlg) {
-		if (response == GtkResponseType.CANCEL)
-			dlg.destroy();
+      bool close = (response == GtkResponseType.CANCEL) ||
+        (response == GtkResponseType.CLOSE) ||
+        (response == GtkResponseType.DELETE_EVENT);
+
+      std.stdio.writefln ("Response: %d", response);
+      if (close)
+        dlg.destroy();
 	}
     
     string action = sa.getName;
