@@ -6,5 +6,5 @@ license              "gpl3"
 dependency           "gtk-d:gtkd" version="~>3.6.5"
 
 targetPath           "bin"
-preGenerateCommands  "sed -e 's#topdir/#$PACKAGE_DIR#' source/constants.d.in > source/constants.d"
+preGenerateCommands  "if [ source/constants.d.in -nt source/constants.d ]; then sed -e 's#topdir/#$PACKAGE_DIR#' source/constants.d.in > source/constants.d; fi"
 //preBuildCommands     "echo '[7m[1m'Compiling resources...'[0m' ; cd data; glib-compile-resources org.example.GtkDApp.gresource.xml"
