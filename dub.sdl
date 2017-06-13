@@ -3,7 +3,7 @@ description          "A minimal D application."
 authors              "acorbi"
 copyright            "Copyright © 2017, acorbi"
 license              "gpl3"
-dependency           "gtk-d" version="~>3.6.5"
+dependency           "gtk-d:gtkd" version="~>3.6.5"
 
 targetPath           "bin"
 preGenerateCommands  "sed -e 's#topdir/#$PACKAGE_DIR#' source/constants.d.in > source/constants.d"
