@@ -14,7 +14,9 @@ import gtk.ApplicationWindow,
   gtk.Main,
   gtk.MessageDialog,
   gtk.AboutDialog,
-  gtk.Dialog;
+  gtk.Dialog,
+  gtk.AccelGroup;
+
 
 /////////////
 // Actions //
@@ -38,28 +40,48 @@ public:
   {
     super(application);
 
-    Builder builder = new Builder();
+    theApp = application;
+
+    builder = new Builder();
+
+    trace ("Trying UI load.");
+
     if(!builder.addFromFile(buildPath(pkgdatadir,"ui/MainWindow.ui")))
       {
         critical("Window ui-file cannot be found");
         return;
       }
+
+    trace ("UI loaded.");
+    
     HeaderBar headerBar = cast(HeaderBar) builder.getObject("headerBar");
     Box windowContent = cast(Box) builder.getObject("windowContent");
     this.setTitlebar(headerBar);
     this.add(windowContent);
 
+    // AccelGroup accelGroup = cast(AccelGroup) builder.getObject("accelGroup");
+    // std.stdio.writefln ("accelgroup: %s", cast(void*)accelGroup);
     createActionsFor (application);
-    //connectMenuActions (builder);
-    //(cast(ImageMenuItem) builder.getObject("mQuit")).addOnActivate ((mi) {close;});
   }
 
   private void createActionsFor (gtk.Application.Application application) {
+    
+    theAccelGroup = new AccelGroup();
+    addAccelGroup (theAccelGroup);
+
+    // Acciones
     foreach (a; ["quit", "about"]) {
        SimpleAction sa = new SimpleAction(a, null);
        sa.addOnActivate( (V, sa) { std.stdio.writefln ("in app's-%s-action.", sa.getName); onMenuSelection (sa); });
        application.addAction (sa);
     }
+    //theApp.setAccelsForAction ("app.quit", ["<Control>q"]);
+    //theApp.setAccelsForAction ("app.about", ["<Control><Shift>a"]);
+
+    MenuItem miw = cast(MenuItem) builder.getObject("mQuit");
+    miw.addAccelerator ("activate", theAccelGroup, 'q', GdkModifierType.CONTROL_MASK, GtkAccelFlags.VISIBLE);
+    miw = cast(MenuItem) builder.getObject("mAbout");
+    miw.addAccelerator ("activate", theAccelGroup, 'a', GdkModifierType.CONTROL_MASK | GdkModifierType.SHIFT_MASK, GtkAccelFlags.VISIBLE); 
   }
   
   private void onMenuSelection (SimpleAction sa)
@@ -117,4 +139,8 @@ public:
         break;
       }
   }
+
+  private gtk.Application.Application theApp;
+  private AccelGroup theAccelGroup;
+  private Builder builder;
 }
