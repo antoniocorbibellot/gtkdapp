@@ -72,7 +72,10 @@ public:
     // Acciones
     foreach (a; ["quit", "about"]) {
        SimpleAction sa = new SimpleAction(a, null);
-       sa.addOnActivate( (V, sa) { std.stdio.writefln ("in app's-%s-action.", sa.getName); onMenuSelection (sa); });
+       sa.addOnActivate ( (V, sa) {
+           //std.stdio.writefln ("in app's-%s-action.", sa.getName);
+           onMenuSelection (sa); }
+         );
        application.addAction (sa);
     }
     //theApp.setAccelsForAction ("app.quit", ["<Control>q"]);
@@ -108,14 +111,13 @@ public:
         (response == GtkResponseType.CLOSE) ||
         (response == GtkResponseType.DELETE_EVENT);
 
-      std.stdio.writefln ("Response: %d", response);
+      //std.stdio.writefln ("Response: %d", response);
       if (close)
         dlg.destroy();
 	}
     
     string action = sa.getName;
-
-    std.stdio.writefln ("in CB, Action: [%s]", action);
+    //std.stdio.writefln ("in CB, Action: [%s]", action);
     
     switch (action)
       {
